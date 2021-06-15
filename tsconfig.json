@@ -16,6 +16,8 @@
         "declaration": true,
         "experimentalDecorators": true,
         "noImplicitReturns": true,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
         "pretty": true,
         "strict": true,
         "baseUrl": ".",

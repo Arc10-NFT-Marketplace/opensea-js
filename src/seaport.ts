@@ -72,7 +72,8 @@ import {
   WRAPPED_NFT_LIQUIDATION_PROXY_ADDRESS_MAINNET,
   WRAPPED_NFT_LIQUIDATION_PROXY_ADDRESS_RINKEBY,
   ENJIN_COIN_ADDRESS,
-  MANA_ADDRESS
+  MANA_ADDRESS,
+  CUSTOM_PROVIDER_URL
 } from './constants'
 
 export class OpenSeaPort {
@@ -115,7 +116,20 @@ export class OpenSeaPort {
 
     this._networkName = apiConfig.networkName
 
-    const readonlyProvider = new Web3.providers.HttpProvider(this._networkName == Network.Main ? MAINNET_PROVIDER_URL : RINKEBY_PROVIDER_URL)
+    let readonlyProvider
+    switch (this._networkName) {
+      case Network.Main: {
+        readonlyProvider = new Web3.providers.HttpProvider(MAINNET_PROVIDER_URL)
+        break
+      }
+      case Network.Rinkeby: {
+        readonlyProvider = new Web3.providers.HttpProvider(RINKEBY_PROVIDER_URL)
+        break
+      }
+      case Network.Custom: {
+        readonlyProvider = new Web3.providers.HttpProvider(CUSTOM_PROVIDER_URL)
+      }
+    }
 
     // Web3 Config
     this.web3 = new Web3(provider)
@@ -125,18 +139,30 @@ export class OpenSeaPort {
     this._wyvernProtocol = new WyvernProtocol(provider, {
       network: this._networkName,
       gasPrice: apiConfig.gasPrice,
+      wyvernExchangeContractAddress: process.env.WYVERN_EXCHANGE,
+      wyvernProxyRegistryContractAddress: process.env.WYVERN_PROXY_REGISTRY,
+      wyvernDAOContractAddress: process.env.WYVERN_DAO,
+      wyvernTokenContractAddress: process.env.WYVERN_TOKEN,
+      wyvernAtomicizerContractAddress: process.env.WYVERN_ATOMICIZER,
     })
 
     // WyvernJS config for readonly (optimization for infura calls)
     this._wyvernProtocolReadOnly = new WyvernProtocol(readonlyProvider, {
       network: this._networkName,
       gasPrice: apiConfig.gasPrice,
+      wyvernExchangeContractAddress: process.env.WYVERN_EXCHANGE,
+      wyvernProxyRegistryContractAddress: process.env.WYVERN_PROXY_REGISTRY,
+      wyvernDAOContractAddress: process.env.WYVERN_DAO,
+      wyvernTokenContractAddress: process.env.WYVERN_TOKEN,
+      wyvernAtomicizerContractAddress: process.env.WYVERN_ATOMICIZER,
     })
 
-    // WrappedNFTLiquidationProxy Config
-    this._wrappedNFTFactoryAddress = this._networkName == Network.Main ? WRAPPED_NFT_FACTORY_ADDRESS_MAINNET : WRAPPED_NFT_FACTORY_ADDRESS_RINKEBY
-    this._wrappedNFTLiquidationProxyAddress = this._networkName == Network.Main ? WRAPPED_NFT_LIQUIDATION_PROXY_ADDRESS_MAINNET : WRAPPED_NFT_LIQUIDATION_PROXY_ADDRESS_RINKEBY
-    this._uniswapFactoryAddress = this._networkName == Network.Main ? UNISWAP_FACTORY_ADDRESS_MAINNET : UNISWAP_FACTORY_ADDRESS_RINKEBY
+    if (this._networkName != Network.Custom) {
+      // WrappedNFTLiquidationProxy Config
+      this._wrappedNFTFactoryAddress = this._networkName == Network.Main ? WRAPPED_NFT_FACTORY_ADDRESS_MAINNET : WRAPPED_NFT_FACTORY_ADDRESS_RINKEBY
+      this._wrappedNFTLiquidationProxyAddress = this._networkName == Network.Main ? WRAPPED_NFT_LIQUIDATION_PROXY_ADDRESS_MAINNET : WRAPPED_NFT_LIQUIDATION_PROXY_ADDRESS_RINKEBY
+      this._uniswapFactoryAddress = this._networkName == Network.Main ? UNISWAP_FACTORY_ADDRESS_MAINNET : UNISWAP_FACTORY_ADDRESS_RINKEBY
+    }
 
     // Emit events
     this._emitter = new EventEmitter()
@@ -1128,7 +1154,9 @@ export class OpenSeaPort {
         proxyAddress?: string;
         minimumAmount?: BigNumber }
     ): Promise<string | null> {
-    proxyAddress = proxyAddress || WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
+    proxyAddress = proxyAddress ||
+      process.env.WYVERN_TOKEN_TRANSFER_PROXY ||
+      WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
 
     const approvedAmount = await this._getApprovedTokenCount({
       accountAddress,
@@ -1199,7 +1227,9 @@ export class OpenSeaPort {
       tokenAddress: string;
       proxyAddress?: string; }
   ): Promise<string> {
-    proxyAddress = proxyAddress || WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
+    proxyAddress = proxyAddress ||
+      process.env.WYVERN_TOKEN_TRANSFER_PROXY ||
+      WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
 
     const gasPrice = await this._computeGasPrice()
 
@@ -1884,7 +1914,10 @@ export class OpenSeaPort {
     if (!tokenAddress) {
       tokenAddress = WyvernSchemas.tokens[this._networkName].canonicalWrappedEther.address
     }
-    const addressToApprove = proxyAddress || WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
+    const addressToApprove = proxyAddress ||
+      process.env.WYVERN_TOKEN_TRANSFER_PROXY ||
+      WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
+
     const approved = await rawCall(this.web3, {
       from: accountAddress,
       to: tokenAddress,
@@ -1940,8 +1973,10 @@ export class OpenSeaPort {
 
     const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: false })
 
+    const exchange = process.env.WYVERN_EXCHANGE || WyvernProtocol.getExchangeContractAddress(this._networkName)
+
     return {
-      exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
+      exchange,
       maker: accountAddress,
       taker,
       quantity: quantityBN,
@@ -2024,8 +2059,10 @@ export class OpenSeaPort {
 
     const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: waitForHighestBid })
 
+    const exchange = process.env.WYVERN_EXCHANGE || WyvernProtocol.getExchangeContractAddress(this._networkName)
+
     return {
-      exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
+      exchange,
       maker: accountAddress,
       taker: buyerAddress,
       quantity: quantityBN,
@@ -2180,8 +2217,11 @@ export class OpenSeaPort {
     const { basePrice, extra, paymentToken } = await this._getPriceParameters(OrderSide.Buy, paymentTokenAddress, expirationTime, startAmount)
     const times = this._getTimeParameters(expirationTime)
 
+    const exchange = process.env.WYVERN_EXCHANGE || WyvernProtocol.getExchangeContractAddress(this._networkName)
+    const target = process.env.WYVERN_ATOMICIZER || WyvernProtocol.getAtomicizerContractAddress(this._networkName)
+
     return {
-      exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
+      exchange,
       maker: accountAddress,
       taker,
       quantity: makeBigNumber(1),
@@ -2195,7 +2235,7 @@ export class OpenSeaPort {
       feeRecipient,
       side: OrderSide.Buy,
       saleKind: SaleKind.FixedPrice,
-      target: WyvernProtocol.getAtomicizerContractAddress(this._networkName),
+      target,
       howToCall: HowToCall.DelegateCall, // required DELEGATECALL to library for atomicizer
       calldata,
       replacementPattern,
@@ -2271,8 +2311,11 @@ export class OpenSeaPort {
       feeRecipient
     } = this._getSellFeeParameters(totalBuyerFeeBasisPoints, totalSellerFeeBasisPoints, waitForHighestBid, sellerBountyBasisPoints)
 
+    const exchange = process.env.WYVERN_EXCHANGE || WyvernProtocol.getExchangeContractAddress(this._networkName)
+    const target = process.env.WYVERN_ATOMICIZER || WyvernProtocol.getAtomicizerContractAddress(this._networkName)
+
     return {
-      exchange: WyvernProtocol.getExchangeContractAddress(this._networkName),
+      exchange,
       maker: accountAddress,
       taker: buyerAddress,
       quantity: makeBigNumber(1),
@@ -2287,7 +2330,7 @@ export class OpenSeaPort {
       feeRecipient,
       side: OrderSide.Sell,
       saleKind: orderSaleKind,
-      target: WyvernProtocol.getAtomicizerContractAddress(this._networkName),
+      target,
       howToCall: HowToCall.DelegateCall, // required DELEGATECALL to library for atomicizer
       calldata,
       replacementPattern,
@@ -2334,8 +2377,10 @@ export class OpenSeaPort {
         const atomicized = order.side == OrderSide.Buy
           ? encodeAtomicizedSell(orderedSchemas, order.metadata.bundle.assets, recipientAddress, this._wyvernProtocol, this._networkName)
           : encodeAtomicizedBuy(orderedSchemas, order.metadata.bundle.assets, recipientAddress, this._wyvernProtocol, this._networkName)
+
+        const atomicizer = process.env.WYVERN_ATOMICIZER || WyvernProtocol.getAtomicizerContractAddress(this._networkName)
         return {
-          target: WyvernProtocol.getAtomicizerContractAddress(this._networkName),
+          target: atomicizer,
           calldata: atomicized.calldata,
           replacementPattern: atomicized.replacementPattern
         }

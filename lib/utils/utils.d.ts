@@ -97,8 +97,8 @@ export declare function getTransferFeeSettings(web3: Web3, { asset, accountAddre
     asset: Asset;
     accountAddress?: string;
 }): Promise<{
-    transferFee: BigNumber | undefined;
-    transferFeeTokenAddress: string | undefined;
+    transferFee: BigNumber;
+    transferFeeTokenAddress: string;
 }>;
 /**
  * Estimates the price of an order

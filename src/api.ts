@@ -24,11 +24,13 @@ import {
 import {
   API_BASE_MAINNET,
   API_BASE_RINKEBY,
+  API_BASE_CUSTOM,
   API_PATH,
   ORDERBOOK_PATH,
   ORDERBOOK_VERSION,
   SITE_HOST_MAINNET,
-  SITE_HOST_RINKEBY
+  SITE_HOST_RINKEBY,
+  SITE_HOST_CUSTOM
 } from './constants'
 
 export class OpenSeaAPI {
@@ -64,6 +66,10 @@ export class OpenSeaAPI {
       case Network.Rinkeby:
         this.apiBaseUrl = config.apiBaseUrl || API_BASE_RINKEBY
         this.hostUrl = SITE_HOST_RINKEBY
+        break
+      case Network.Custom:
+        this.apiBaseUrl = config.apiBaseUrl || API_BASE_CUSTOM
+        this.hostUrl = SITE_HOST_CUSTOM
         break
       case Network.Main:
       default:

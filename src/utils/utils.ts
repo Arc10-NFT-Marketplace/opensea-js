@@ -334,7 +334,10 @@ export const assetContractFromJSON = (asset_contract: any): OpenSeaAssetContract
 }
 
 export const collectionFromJSON = (collection: any): OpenSeaCollection => {
-  const createdDate = new Date(`${collection.created_date}Z`)
+  let createdDate = new Date(`${collection.created_date}Z`)
+  if (createdDate.getTime() !== createdDate.getTime()) {
+    createdDate = new Date(collection.created_date)
+  }
 
   return {
     createdDate,

@@ -705,7 +705,7 @@ export declare class OpenSeaPort {
         wyAssets: WyvernAsset[];
         accountAddress: string;
         proxyAddress?: string;
-    }): Promise<(string | null)[]>;
+    }): Promise<string[]>;
     _buyOrderValidationAndApprovals({ order, counterOrder, accountAddress }: {
         order: UnhashedOrder;
         counterOrder?: Order;
@@ -725,8 +725,8 @@ export declare class OpenSeaPort {
         schemaName: WyvernSchemaName;
     }): Promise<boolean>;
     _getBuyFeeParameters(totalBuyerFeeBasisPoints: number, totalSellerFeeBasisPoints: number, sellOrder?: UnhashedOrder): {
-        makerRelayerFee: BigNumber;
-        takerRelayerFee: BigNumber;
+        makerRelayerFee: any;
+        takerRelayerFee: any;
         makerProtocolFee: BigNumber;
         takerProtocolFee: BigNumber;
         makerReferrerFee: BigNumber;

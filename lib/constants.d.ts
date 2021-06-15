@@ -6,6 +6,7 @@ export declare const OPENSEA_FEE_RECIPIENT = "0x5b3256965e7c3cf26e11fcaf296dfc88
 export declare const DEP_INFURA_KEY = "e8695bce67944848aa95459fac052f8e";
 export declare const MAINNET_PROVIDER_URL = "https://api.opensea.io/jsonrpc/v1/";
 export declare const RINKEBY_PROVIDER_URL = "https://rinkeby-api.opensea.io/jsonrpc/v1/";
+export declare const CUSTOM_PROVIDER_URL: string;
 export declare const INVERSE_BASIS_POINT = 10000;
 export declare const MAX_UINT_256: BigNumber;
 export declare const WYVERN_EXCHANGE_ADDRESS_MAINNET = "0x7be8076f4ea4a4ad08075c2508e481d6c946d12b";
@@ -44,7 +45,9 @@ export declare const ORDERBOOK_VERSION: number;
 export declare const API_VERSION: number;
 export declare const API_BASE_MAINNET = "https://api.opensea.io";
 export declare const API_BASE_RINKEBY = "https://rinkeby-api.opensea.io";
+export declare const API_BASE_CUSTOM: string;
 export declare const SITE_HOST_MAINNET = "https://opensea.io";
 export declare const SITE_HOST_RINKEBY = "https://rinkeby.opensea.io";
+export declare const SITE_HOST_CUSTOM: string;
 export declare const ORDERBOOK_PATH: string;
 export declare const API_PATH: string;
