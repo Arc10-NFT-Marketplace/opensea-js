@@ -18,6 +18,7 @@ export declare class OpenSeaAPI {
      */
     logger: (arg: string) => void;
     private apiKey;
+    private authToken;
     /**
      * Create an instance of the OpenSea API
      * @param config OpenSeaAPIConfig for setting up the API, including an optional API key, network name, and base URL
