@@ -54,6 +54,8 @@ export class OpenSeaAPI {
 
   private apiKey: string | undefined
 
+  private authToken: string | undefined
+
   /**
    * Create an instance of the OpenSea API
    * @param config OpenSeaAPIConfig for setting up the API, including an optional API key, network name, and base URL
@@ -61,6 +63,7 @@ export class OpenSeaAPI {
    */
   constructor(config: OpenSeaAPIConfig, logger?: (arg: string) => void) {
     this.apiKey = config.apiKey
+    this.authToken = config.authToken
 
     switch (config.networkName) {
       case Network.Rinkeby:
@@ -366,11 +369,13 @@ export class OpenSeaAPI {
 
     const apiBase = this.apiBaseUrl
     const apiKey = this.apiKey
+    const authToken = this.authToken
     const finalUrl = apiBase + apiPath
     const finalOpts = {
       ...opts,
       headers: {
         ...(apiKey ? { 'X-API-KEY': apiKey } : {}),
+        ...(authToken ? { 'Authorization': authToken } : {}),
         ...(opts.headers || {}),
       }
     }

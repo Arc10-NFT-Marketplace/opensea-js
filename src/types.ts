@@ -94,11 +94,13 @@ export interface EventData {
  * @param networkName `Network` type to use. Defaults to `Network.Main` (mainnet)
  * @param gasPrice Default gas price to send to the Wyvern Protocol
  * @param apiBaseUrl Optional base URL to use for the API
+ * @param authToken Optional parameter authentication token
  */
 export interface OpenSeaAPIConfig {
   networkName?: Network
   apiKey?: string
   apiBaseUrl?: string
+  authToken?: string
   // Sent to WyvernJS
   gasPrice?: BigNumber
 }
