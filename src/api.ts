@@ -375,7 +375,7 @@ export class OpenSeaAPI {
       ...opts,
       headers: {
         ...(apiKey ? { 'X-API-KEY': apiKey } : {}),
-        ...(authToken ? { 'Authorization': authToken } : {}),
+        ...(authToken ? { 'Authorization': `Bearer ${authToken}` } : {}),
         ...(opts.headers || {}),
       }
     }
