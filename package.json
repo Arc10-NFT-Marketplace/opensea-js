@@ -1,6 +1,6 @@
 {
   "name": "opensea-js",
-  "version": "1.1.11",
+  "version": "1.2.11",
   "description": "JavaScript SDK for the OpenSea marketplace. Let users buy or sell crypto collectibles and other cryptogoods, all on your own site!",
   "files": [
     "lib",
@@ -40,7 +40,7 @@
   "homepage": "https://docs.opensea.io/v1.0/reference",
   "dependencies": {
     "bignumber.js": "^4.1.0",
-    "ethereumjs-abi": "git+https://github.com/ProjectWyvern/ethereumjs-abi.git",
+    "ethereumjs-abi": "git+https://github.com/ProjectWyvern/ethereumjs-abi.git#3d2d89641a6ad5984929b6ca4b646452ec74f73d",
     "ethereumjs-util": "^5.2.0",
     "fbemitter": "^2.1.1",
     "isomorphic-unfetch": "^2.1.1",
@@ -49,8 +49,8 @@
     "query-string": "^6.11.1",
     "web3": "0.20.7",
     "webpack": "^3.10.0",
-    "wyvern-js": "git+https://github.com/tarassh/wyvern-js.git#v3.3.0",
-    "wyvern-schemas": "git+https://github.com/tarassh/wyvern-schemas.git#v0.12.1"
+    "wyvern-js": "git+https://github.com/tarassh/wyvern-js.git#v3.3.1",
+    "wyvern-schemas": "git+https://github.com/tarassh/wyvern-schemas.git#v0.12.2"
   },
   "husky": {
     "hooks": {
