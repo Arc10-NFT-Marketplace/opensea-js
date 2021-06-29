@@ -139,22 +139,22 @@ export class OpenSeaPort {
     this._wyvernProtocol = new WyvernProtocol(provider, {
       network: this._networkName,
       gasPrice: apiConfig.gasPrice,
-      wyvernExchangeContractAddress: process.env.REACT_APP_WYVERN_EXCHANGE || process.env.WYVERN_EXCHANGE,
-      wyvernProxyRegistryContractAddress: process.env.REACT_APP_WYVERN_PROXY_REGISTRY || process.env.WYVERN_PROXY_REGISTRY,
-      wyvernDAOContractAddress: process.env.REACT_APP_WYVERN_DAO || process.env.WYVERN_DAO,
-      wyvernTokenContractAddress: process.env.REACT_APP_WYVERN_TOKEN || process.env.WYVERN_TOKEN,
-      wyvernAtomicizerContractAddress: process.env.REACT_APP_WYVERN_ATOMICIZER || process.env.WYVERN_ATOMICIZER,
+      wyvernExchangeContractAddress: window._env_.REACT_APP_WYVERN_EXCHANGE || process.env.REACT_APP_WYVERN_EXCHANGE || process.env.WYVERN_EXCHANGE,
+      wyvernProxyRegistryContractAddress: window._env_.REACT_APP_WYVERN_PROXY_REGISTRY || process.env.REACT_APP_WYVERN_PROXY_REGISTRY || process.env.WYVERN_PROXY_REGISTRY,
+      wyvernDAOContractAddress: window._env_.REACT_APP_WYVERN_DAO || process.env.REACT_APP_WYVERN_DAO || process.env.WYVERN_DAO,
+      wyvernTokenContractAddress: window._env_.REACT_APP_WYVERN_TOKEN || process.env.REACT_APP_WYVERN_TOKEN || process.env.WYVERN_TOKEN,
+      wyvernAtomicizerContractAddress: window._env_.REACT_APP_WYVERN_ATOMICIZER || process.env.REACT_APP_WYVERN_ATOMICIZER || process.env.WYVERN_ATOMICIZER,
     })
 
     // WyvernJS config for readonly (optimization for infura calls)
     this._wyvernProtocolReadOnly = new WyvernProtocol(readonlyProvider, {
       network: this._networkName,
       gasPrice: apiConfig.gasPrice,
-      wyvernExchangeContractAddress: process.env.REACT_APP_WYVERN_EXCHANGE || process.env.WYVERN_EXCHANGE,
-      wyvernProxyRegistryContractAddress: process.env.REACT_APP_WYVERN_PROXY_REGISTRY || process.env.WYVERN_PROXY_REGISTRY,
-      wyvernDAOContractAddress: process.env.REACT_APP_WYVERN_DAO || process.env.WYVERN_DAO,
-      wyvernTokenContractAddress: process.env.REACT_APP_WYVERN_TOKEN || process.env.WYVERN_TOKEN,
-      wyvernAtomicizerContractAddress: process.env.REACT_APP_WYVERN_ATOMICIZER || process.env.WYVERN_ATOMICIZER,
+      wyvernExchangeContractAddress: window._env_.REACT_APP_WYVERN_EXCHANGE || process.env.REACT_APP_WYVERN_EXCHANGE || process.env.WYVERN_EXCHANGE,
+      wyvernProxyRegistryContractAddress: window._env_.REACT_APP_WYVERN_PROXY_REGISTRY || process.env.REACT_APP_WYVERN_PROXY_REGISTRY || process.env.WYVERN_PROXY_REGISTRY,
+      wyvernDAOContractAddress: window._env_.REACT_APP_WYVERN_DAO || process.env.REACT_APP_WYVERN_DAO || process.env.WYVERN_DAO,
+      wyvernTokenContractAddress: window._env_.REACT_APP_WYVERN_TOKEN || process.env.REACT_APP_WYVERN_TOKEN || process.env.WYVERN_TOKEN,
+      wyvernAtomicizerContractAddress: window._env_.REACT_APP_WYVERN_ATOMICIZER || process.env.REACT_APP_WYVERN_ATOMICIZER || process.env.WYVERN_ATOMICIZER,
     })
 
     if (this._networkName != Network.Custom) {
@@ -1155,6 +1155,7 @@ export class OpenSeaPort {
         minimumAmount?: BigNumber }
     ): Promise<string | null> {
     proxyAddress = proxyAddress ||
+      window._env_.REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY ||
       process.env.REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY ||
       process.env.WYVERN_TOKEN_TRANSFER_PROXY ||
       WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
@@ -1229,6 +1230,7 @@ export class OpenSeaPort {
       proxyAddress?: string; }
   ): Promise<string> {
     proxyAddress = proxyAddress ||
+      window._env_.REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY ||
       process.env.REACT_APP_WYVERN_TOKEN_TRANSFER_PROXY ||
       process.env.WYVERN_TOKEN_TRANSFER_PROXY ||
       WyvernProtocol.getTokenTransferProxyAddress(this._networkName)
@@ -1975,7 +1977,8 @@ export class OpenSeaPort {
 
     const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: false })
 
-    const exchange = process.env.WYVERN_EXCHANGE ||
+    const exchange = window._env_.REACT_APP_WYVERN_EXCHANGE ||
+      process.env.WYVERN_EXCHANGE ||
       process.env.REACT_APP_WYVERN_EXCHANGE ||
       WyvernProtocol.getExchangeContractAddress(this._networkName)
 
@@ -2063,7 +2066,8 @@ export class OpenSeaPort {
 
     const { staticTarget, staticExtradata } = await this._getStaticCallTargetAndExtraData({ asset: openSeaAsset, useTxnOriginStaticCall: waitForHighestBid })
 
-    const exchange = process.env.WYVERN_EXCHANGE ||
+    const exchange = window._env_.REACT_APP_WYVERN_EXCHANGE ||
+      process.env.WYVERN_EXCHANGE ||
       process.env.REACT_APP_WYVERN_EXCHANGE ||
       WyvernProtocol.getExchangeContractAddress(this._networkName)
 
@@ -2223,10 +2227,12 @@ export class OpenSeaPort {
     const { basePrice, extra, paymentToken } = await this._getPriceParameters(OrderSide.Buy, paymentTokenAddress, expirationTime, startAmount)
     const times = this._getTimeParameters(expirationTime)
 
-    const exchange = process.env.WYVERN_EXCHANGE ||
+    const exchange = window._env_.REACT_APP_WYVERN_EXCHANGE ||
+      process.env.WYVERN_EXCHANGE ||
       process.env.REACT_APP_WYVERN_EXCHANGE ||
       WyvernProtocol.getExchangeContractAddress(this._networkName)
-    const target = process.env.WYVERN_ATOMICIZER ||
+    const target = window._env_.REACT_APP_WYVERN_ATOMICIZER ||
+      process.env.WYVERN_ATOMICIZER ||
       process.env.REACT_APP_WYVERN_ATOMICIZER ||
       WyvernProtocol.getAtomicizerContractAddress(this._networkName)
 
@@ -2321,10 +2327,12 @@ export class OpenSeaPort {
       feeRecipient
     } = this._getSellFeeParameters(totalBuyerFeeBasisPoints, totalSellerFeeBasisPoints, waitForHighestBid, sellerBountyBasisPoints)
 
-    const exchange = process.env.WYVERN_EXCHANGE ||
+    const exchange = window._env_.REACT_APP_WYVERN_EXCHANGE ||
+      process.env.WYVERN_EXCHANGE ||
       process.env.REACT_APP_WYVERN_EXCHANGE ||
       WyvernProtocol.getExchangeContractAddress(this._networkName)
-    const target = process.env.WYVERN_ATOMICIZER ||
+    const target = window._env_.REACT_APP_WYVERN_ATOMICIZER ||
+      process.env.WYVERN_ATOMICIZER ||
       process.env.REACT_APP_WYVERN_ATOMICIZER ||
       WyvernProtocol.getAtomicizerContractAddress(this._networkName)
 
@@ -2392,7 +2400,8 @@ export class OpenSeaPort {
           ? encodeAtomicizedSell(orderedSchemas, order.metadata.bundle.assets, recipientAddress, this._wyvernProtocol, this._networkName)
           : encodeAtomicizedBuy(orderedSchemas, order.metadata.bundle.assets, recipientAddress, this._wyvernProtocol, this._networkName)
 
-        const atomicizer = process.env.WYVERN_ATOMICIZER ||
+        const atomicizer = window._env_.REACT_APP_WYVERN_ATOMICIZER ||
+          process.env.WYVERN_ATOMICIZER ||
           process.env.REACT_APP_WYVERN_ATOMICIZER ||
           WyvernProtocol.getAtomicizerContractAddress(this._networkName)
         return {
