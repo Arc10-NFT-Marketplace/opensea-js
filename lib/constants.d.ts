@@ -34,10 +34,10 @@ export declare const STATIC_CALL_TX_ORIGIN_RINKEBY_ADDRESS = "0xe291abab95677bc6
 export declare const STATIC_CALL_CHEEZE_WIZARDS_ADDRESS: string;
 export declare const STATIC_CALL_CHEEZE_WIZARDS_RINKEBY_ADDRESS = "0x8a640bdf8886dd6ca1fad9f22382b50deeacde08";
 export declare const STATIC_CALL_DECENTRALAND_ESTATES_ADDRESS = "0x93c3cd7ba04556d2e3d7b8106ce0f83e24a87a7e";
-export declare const DEFAULT_BUYER_FEE_BASIS_POINTS = 0;
-export declare const DEFAULT_SELLER_FEE_BASIS_POINTS = 250;
+export declare const DEFAULT_BUYER_FEE_BASIS_POINTS = 150;
+export declare const DEFAULT_SELLER_FEE_BASIS_POINTS = 500;
 export declare const OPENSEA_SELLER_BOUNTY_BASIS_POINTS = 100;
-export declare const DEFAULT_MAX_BOUNTY = 250;
+export declare const DEFAULT_MAX_BOUNTY = 500;
 export declare const MIN_EXPIRATION_SECONDS = 10;
 export declare const ORDER_MATCHING_LATENCY_SECONDS: number;
 export declare const SELL_ORDER_BATCH_SIZE = 3;
