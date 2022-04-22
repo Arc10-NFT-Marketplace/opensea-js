@@ -50,7 +50,7 @@
 		"web3": "0.20.7",
 		"webpack": "^3.10.0",
 		"wyvern-js": "git+https://github.com/Arc10-NFT-Marketplace/wyvern-js.git#v3.3.1",
-		"wyvern-schemas": "git+https://github.com/Arc10-NFT-Marketplace/wyvern-schemas.git"
+		"wyvern-schemas": "git+https://github.com/Arc10-NFT-Marketplace/wyvern-schemas.git#86c535fdeaf8b18ac19e6f60e132afe042c82d4e"
 	},
 	"devDependencies": {
 		"@types/chai": "4.2.9",

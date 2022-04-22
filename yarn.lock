@@ -23,21 +23,6 @@
     uuid "^3.1.0"
     web3 "^0.20.0"
 
-"@0xproject/abi-gen@0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@0xproject/abi-gen/-/abi-gen-0.1.2.tgz#a74baa088f94ff83431573b5a3e010ccbb5ba300"
-  integrity sha512-vwArB0lTTuInOWTh5KeeNeJTswrGJrHebau8sdrG8TBNiVwAAehthfWflieMRKK54D11Z+7TO8fupCMa7BaoxA==
-  dependencies:
-    "@0xproject/utils" "^0.2.0"
-    chalk "^2.3.0"
-    glob "^7.1.2"
-    handlebars "^4.0.11"
-    lodash "^4.17.4"
-    mkdirp "^0.5.1"
-    to-snake-case "^1.0.0"
-    web3 "^0.20.0"
-    yargs "^10.0.3"
-
 "@0xproject/abi-gen@^0.1.1":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@0xproject/abi-gen/-/abi-gen-0.1.7.tgz#36ed8b7a909c529ecff74438edb87fbb600dd2fa"
@@ -6012,9 +5997,9 @@ wrappy@1:
     web3 "^0.20.4"
     webpack "^3.10.0"
 
-"wyvern-schemas@git+https://github.com/Arc10-NFT-Marketplace/wyvern-schemas.git":
+"wyvern-schemas@git+https://github.com/Arc10-NFT-Marketplace/wyvern-schemas.git#86c535fdeaf8b18ac19e6f60e132afe042c82d4e":
   version "0.12.2"
-  resolved "git+https://github.com/Arc10-NFT-Marketplace/wyvern-schemas.git#94c45b737d17fb038e3c21c380f8238f8753280d"
+  resolved "git+https://github.com/Arc10-NFT-Marketplace/wyvern-schemas.git#86c535fdeaf8b18ac19e6f60e132afe042c82d4e"
   dependencies:
     "@0xproject/utils" "^0.3.4"
     axios "^0.17.1"
